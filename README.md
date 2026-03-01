@@ -281,10 +281,10 @@ An employee logs in at `8:59` and logs out at `18:31`:
 
 ### 5. `printPayrollSlip()` — Full Payroll Calculation
 
-This method assembles the complete payroll for one employee in one month. It calls `calculateHoursWorked()` twice — once for the 1st cutoff (days 1–15) and once for the 2nd cutoff (days 16–31) — then combines those results before computing deductions.
+This method assembles the complete payroll for one employee in one month. It calls `calculateHoursWorked()` twice — once for the 1st cutoff (days 1–15) and once for the 2nd cutoff (days 16–31) then combines those results before computing deductions.
 
 **Why combine before deductions?**
-Government contributions (SSS, Philhealth, Pag-ibig) and withholding tax are computed on a **monthly** basis, not per cutoff. Adding the two cutoffs together first gives the true monthly gross, which then feeds into the correct deduction bracket. Computing deductions on each half-month separately would give a different (and incorrect) result.
+Government contributions (SSS, Philhealth, Pag-ibig) and withholding tax are computed on a **monthly** basis, not per cutoff. Adding the two cutoffs together first gives the true monthly gross, which then feeds into the correct deduction bracket. Computing deductions on each half month separately would give a different (and incorrect) result.
 
 The full calculation sequence:
 ```
