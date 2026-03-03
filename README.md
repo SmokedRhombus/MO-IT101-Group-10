@@ -418,16 +418,6 @@ A basic `split(",")` would break on addresses that contain commas. This method h
 
 ---
 
-## Technical Notes
-
-- **Single file** — all code resides in `MotorPHPayroll.java` per project requirements
-- **No OOP concepts** — no classes beyond the main class, no inheritance, no encapsulation patterns
-- **No external libraries** — uses only `java.io` and `java.util` from the standard library
-- **No rounding** — all intermediate and final values preserve full floating-point precision
-- **Employee data source** — `Copy_of_MotorPH_Employee_Data.xlsx` (Employee Details sheet)
-- **Attendance data source** — `Copy_of_MotorPH_Employee_Data.xlsx` (Attendance Record sheet, exported as CSV)
-- **Deduction tables source** — `Copy_of_SSS_Contribution.xlsx`, `Copy_of_Philhealth_Contribution.xlsx`, `Copy_of_Pag-ibig_Contribution.xlsx`, `Copy_of_Witholding_Tax.xlsx`
-
 ---
 
 ## Employee Coverage
