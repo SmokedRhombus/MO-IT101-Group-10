@@ -1,23 +1,24 @@
 # MotorPH Payroll System
 
-A command line Java application for **MotorPH's Payroll Module** made by Group 10 that presents employee information and calculates salaries with government mandated deductions, built as a single `.java` file with no OOP concepts and no external libraries.
-
-
-## Members
-
-- **Miguel Dominic E. Roa** 
-- **Kreskin Bejoc** 
-- **Carlos Louis Acula** 
-- **April Joyce Abejo**
+A command line Java application for **MotorPH** made by MO-IT101 Group 10 that presents employee information and calculates salaries with government mandated deductions, built as a single `.java` file with no OOP concepts and no external libraries.
 
 ---
+##Members
+Miguel Dominic E. Roa
+Kreskin Bejoc
+Carlos Louis Acula
+April Joyce Abejo 
 
 ## Features
 
-- **View Employee Information** — displays all employee details (Employee #, Name, Birthday, Address, Government IDs, Position, Salary, etc.)
-- **View Monthly Payroll for an Employee** — generates a full payroll slip for a chosen employee and month
-- **View All Employees Payroll Summary** — displays a payroll table for all 34 employees for a chosen month
-- **Data coverage: June – December 2024**
+**Login System**
+- Requires a username and password to access the program
+- Two roles: `employee` and `payroll_staff`, each with a different menu
+- Wrong credentials immediately terminate the program
+
+**Employee role** — view personal info only (Employee #, Name, Birthday)
+
+**Payroll Staff role** — process payroll for one or all employees, displaying all cutoffs from June to December 2024 with full deduction breakdowns
 
 ---
 
@@ -122,46 +123,75 @@ java MotorPHPayroll
               MOTORPH PAYROLL SYSTEM                   
 =======================================================
 
-MAIN MENU
-  [1] View Employee Information
-  [2] View Monthly Payroll for an Employee
-  [3] View All Employees Payroll Summary
-  [4] Exit
-Enter choice: 2
+Username: payroll_staff
+Password: 12345
+[INFO] Loaded 5168 attendance records from 'attendance.csv'.
 
---- MONTHLY PAYROLL ---
+PAYROLL STAFF MENU
+  [1] Process Payroll
+  [2] Exit
+Enter choice: 1
+
+PROCESS PAYROLL
+  [1] One Employee
+  [2] All Employees
+  [3] Exit
+Enter choice: 1
+
 Enter Employee Number: 10001
 
-Select Month (June – December 2024):
-  [1] June    [2] July     ...
-Enter choice (1-7): 1
+==========================================================
+  PAYROLL — June 2024
+==========================================================
+  Employee #   : 10001
+  Employee Name: Manuel III Garcia
+  Birthday     : 10/11/1983
+----------------------------------------------------------
+  Cutoff Date  : June 1 to June 15
+  Total Hours Worked : 64.8333 hrs
+  Gross Salary       : 34732.1429
+  Net Salary         : 34732.1429
+----------------------------------------------------------
+  Cutoff Date  : June 16 to June 30  (Second payout includes all deductions)
+  Total Hours Worked : 66.8167 hrs
+  Gross Salary       : 35794.6429
+  Each Deduction (based on combined monthly gross):
+    SSS              : 1125.0000
+    PhilHealth       : 900.0000
+    Pag-IBIG         : 100.0000
+    Tax              : 11353.4357
+  Total Deductions   : 13478.4357
+  Net Salary         : 22316.2071
+==========================================================
+  PAYROLL — July 2024
+...
+```
 
-==========================================================
-  PAYROLL SLIP  —  June 2024
-==========================================================
-  Employee #          : 10001
-  Name                : Manuel III Garcia
-  Position            : Chief Executive Officer
-  Hourly Rate         : 535.7143
-----------------------------------------------------------
-  1st Cutoff Hours  (Days  1–15) : 64.8333 hrs
-  2nd Cutoff Hours  (Days 16–31) : 66.8167 hrs
-  Total Hours Worked             : 131.6500 hrs
-----------------------------------------------------------
-  1st Cutoff Gross Pay           : 34732.1429
-  2nd Cutoff Gross Pay           : 35794.6429
-  TOTAL GROSS PAY                : 70526.7857
-----------------------------------------------------------
-  DEDUCTIONS  (based on total monthly gross pay):
-    SSS Contribution             : 1125.0000
-    Philhealth                   : 900.0000
-    Pag-ibig                     : 100.0000
-      Taxable Income             : 68401.7857
-    Withholding Tax              : 11353.4357
-  TOTAL DEDUCTIONS               : 13478.4357
-----------------------------------------------------------
-  NET PAY                        : 57048.3500
-==========================================================
+**Invalid login example:**
+```
+Username: admin
+Password: wrong
+Incorrect username and/or password.
+```
+
+**Employee role example:**
+```
+Username: employee
+Password: 12345
+
+EMPLOYEE MENU
+  [1] Enter your employee number
+  [2] Exit
+Enter choice: 1
+Enter Employee Number: 10005
+
+======================================
+          EMPLOYEE DETAILS
+======================================
+  Employee #   : 10005
+  Employee Name: Eduard Hernandez
+  Birthday     : 09/23/1989
+======================================
 ```
 
 ---
@@ -178,31 +208,36 @@ The entire program lives in one class (`MotorPHPayroll`) and is organized into l
 
 ```
 main()
- ├── loadAttendanceCsv()         ← reads attendance.csv into memory
- ├── getEmployees()              ← returns embedded employee data
- └── [menu loop]
-      ├── showEmployeeInfo()     ← Menu option 1
-      ├── showEmployeePayroll()  ← Menu option 2
-      │    └── printPayrollSlip()
-      │         ├── calculateHoursWorked()
-      │         ├── computeSSS()
-      │         ├── computePhilhealth()
-      │         ├── computePagibig()
-      │         └── computeWithholdingTax()
-      └── showAllPayroll()       ← Menu option 3
-           └── (same calculation methods as above)
+ ├── loadAttendanceCsv()              ← reads attendance.csv into memory
+ ├── getEmployees()                   ← returns embedded employee data
+ ├── [login prompt]
+ │    ├── wrong credentials → print message, terminate
+ │    ├── username = "employee"
+ │    │    └── runEmployeeMenu()
+ │    │         └── [1] enter employee number → show Employee #, Name, Birthday
+ │    └── username = "payroll_staff"
+ │         └── runPayrollStaffMenu()
+ │              └── [1] Process Payroll → runProcessPayrollMenu()
+ │                   ├── [1] One employee  → processOneEmployee()
+ │                   │    └── printFullPayrollForEmployee()
+ │                   │         ├── calculateHoursWorked()  (×2 per month, ×7 months)
+ │                   │         ├── computeSSS()
+ │                   │         ├── computePhilhealth()
+ │                   │         ├── computePagibig()
+ │                   │         └── computeWithholdingTax()
+ │                   └── [2] All employees → processAllEmployees()
+ │                        └── printFullPayrollForEmployee() for each of 34 employees
 ```
 
 ---
 
-### 1. `main()` — Main Menu
+### 1. `main()` — Program Entry Point & Login
 
-When the program starts, `main` does two things before showing the menu:
+When the program starts, `main` loads all employee and attendance data, then immediately prompts for a username and password before showing anything else.
 
-1. **Loads employee data** by calling `getEmployees()`, which returns a hardcoded 2D array of all 34 employees sourced directly from the MotorPH Excel file.
-2. **Loads attendance data** by calling `loadAttendanceCsv("attendance.csv")`, which reads and parses the CSV file into a 2D array of strings.
+Valid credentials are `employee`/`12345` and `payroll_staff`/`12345`. If either the username or password is wrong, the program prints `"Incorrect username and/or password."` and terminates — no menu is shown at all.
 
-After that, a `while` loop keeps the main menu running until the user chooses Exit. Each menu option calls its corresponding method and passes both data arrays into it.
+If login succeeds, the program branches based on the username. `employee` goes to `runEmployeeMenu()` and `payroll_staff` goes to `runPayrollStaffMenu()`. These two paths have completely different menus and capabilities.
 
 ---
 
@@ -242,7 +277,7 @@ The hourly rate formula `BasicSalary / 21 / 8` is based on 21 working days per m
 
 This method opens `attendance.csv` line by line using a `BufferedReader`. The first line (the header row) is skipped automatically.
 
-Each subsequent line is passed to `parseCsvLine()`, which splits it into fields while correctly handling quoted values that may contain commas (e.g., an address field). After splitting, each field is trimmed and any surrounding double quotes are stripped.
+Each subsequent line is passed to `parseCsvLine()`, which splits it into fields while correctly handling quoted values that may contain commas (e.g., an address field). After splitting, each field is trimmed and any surrounding double-quotes are stripped.
 
 Only rows with at least 6 columns and a non-empty Employee # are kept. The result is a `String[][]` where each row represents one attendance record with columns:
 
@@ -279,17 +314,20 @@ An employee logs in at `8:59` and logs out at `18:31`:
 
 ---
 
-### 5. `printPayrollSlip()` — Full Payroll Calculation
+### 5. `printFullPayrollForEmployee()` — Full Payroll Across All Months
 
-This method assembles the complete payroll for one employee in one month. It calls `calculateHoursWorked()` twice — once for the 1st cutoff (days 1–15) and once for the 2nd cutoff (days 16–31) then combines those results before computing deductions.
+This method loops through all seven months (June–December 2024) and prints two cutoff blocks per month for the given employee. This is the core output method for `payroll_staff`.
 
-**Why combine before deductions?**
-Government contributions (SSS, Philhealth, Pag-ibig) and withholding tax are computed on a **monthly** basis, not per cutoff. Adding the two cutoffs together first gives the true monthly gross, which then feeds into the correct deduction bracket. Computing deductions on each half month separately would give a different (and incorrect) result.
+**Why two cutoff blocks per month?**
+Per the process flow, the 1st cutoff (days 1–15) is a partial advance — it shows gross and net salary but carries no deductions. The 2nd cutoff (days 16–end of month) is the full payout where all government deductions are applied and itemized.
 
-The full calculation sequence:
+**Why compute deductions on the combined gross?**
+Government contributions (SSS, Philhealth, Pag-ibig) and withholding tax are computed on a **monthly** basis, not per cutoff. Adding the two cutoffs together first gives the true monthly gross, which then feeds into the correct deduction bracket. Computing deductions on each half-month separately would produce a different (and incorrect) result.
+
+The full calculation sequence per month:
 ```
 Hours1        = calculateHoursWorked( days 1–15 )
-Hours2        = calculateHoursWorked( days 16–31 )
+Hours2        = calculateHoursWorked( days 16–lastDay )
 Gross1        = Hours1 × HourlyRate
 Gross2        = Hours2 × HourlyRate
 TotalGross    = Gross1 + Gross2
@@ -299,10 +337,13 @@ Philhealth    = computePhilhealth( TotalGross )
 Pagibig       = computePagibig( TotalGross )
 TaxableIncome = TotalGross − SSS − Philhealth − Pagibig
 Tax           = computeWithholdingTax( TaxableIncome )
-
 TotalDeductions = SSS + Philhealth + Pagibig + Tax
-NetPay          = TotalGross − TotalDeductions
+
+1st Cutoff Net Salary = Gross1               ← no deductions
+2nd Cutoff Net Salary = Gross2 − TotalDeductions ← all deductions here
 ```
+
+Note that allowances (rice subsidy, phone, clothing) are **not included** in the gross pay calculation, as specified in the process flow.
 
 ---
 
@@ -384,6 +425,18 @@ A basic `split(",")` would break on addresses that contain commas. This method h
 
 ---
 
+## Technical Notes
+
+- **Single file** — all code resides in `MotorPHPayroll.java` per project requirements
+- **No OOP concepts** — no classes beyond the main class, no inheritance, no encapsulation patterns
+- **No external libraries** — uses only `java.io` and `java.util` from the standard library
+- **No rounding** — all intermediate and final values preserve full floating-point precision
+- **Employee data source** — `Copy_of_MotorPH_Employee_Data.xlsx` (Employee Details sheet)
+- **Attendance data source** — `Copy_of_MotorPH_Employee_Data.xlsx` (Attendance Record sheet, exported as CSV)
+- **Deduction tables source** — `Copy_of_SSS_Contribution.xlsx`, `Copy_of_Philhealth_Contribution.xlsx`, `Copy_of_Pag-ibig_Contribution.xlsx`, `Copy_of_Witholding_Tax.xlsx`
+
+---
+
 ## Employee Coverage
 
 The system includes all **34 MotorPH employees** (Employee #10001 – #10034) across departments:
@@ -392,5 +445,5 @@ Executive, HR, Accounting, Payroll, Account Management, IT, Sales & Marketing, S
 ---
 
 ## References
+
 - [MotorPH Company Website](https://sites.google.com/mmdc.mcl.edu.ph/motorph/home)
-- Government contribution tables provided by MotorPH (simplified rates for academic purposes)
