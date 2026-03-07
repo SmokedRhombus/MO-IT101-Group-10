@@ -15,7 +15,7 @@ Members
 **Login System**
 - Requires a username and password to access the program
 - Two roles: `employee` and `payroll_staff`, each with a different menu
-- Wrong credentials immediately terminate the program
+- Invalid credentials show an error and prompt for login again; the program exits only when you choose **Exit** from the role menu
 
 **Employee role** — view personal info only (Employee #, Name, Birthday)
 
