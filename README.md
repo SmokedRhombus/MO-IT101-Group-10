@@ -6,9 +6,6 @@ A command line Java application made by Group 10 for **MotorPH's Payroll Module*
 ## Group Members
 
 - Miguel Dominic E. Roa
-- Kreskin Bejoc
-- Carlos Louis Acula
-- April Joyce Abejo
 
 ## Features
 
