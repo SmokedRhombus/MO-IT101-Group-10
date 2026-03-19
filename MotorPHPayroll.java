@@ -323,15 +323,15 @@ public class MotorPHPayroll {
             // 2nd Cutoff block — all deductions itemized here
             System.out.printf("  Cutoff Date  : %s 16 to %s %d  (Second payout includes all deductions)%n",
                     monthName, monthName, lastDay);
-            System.out.printf("  Total Hours Worked : %.4f hrs%n", hours2);
-            System.out.printf("  Gross Salary       : %.4f%n", gross2);
+            System.out.printf("  Total Hours Worked : ", hours2);
+            System.out.printf("  Gross Salary       : ", gross2);
             System.out.println("  Each Deduction (based on combined monthly gross):");
-            System.out.printf("    SSS              : %.4f%n", sss);
-            System.out.printf("    PhilHealth       : %.4f%n", philhealth);
-            System.out.printf("    Pag-IBIG         : %.4f%n", pagibig);
-            System.out.printf("    Tax              : %.4f%n", tax);
-            System.out.printf("  Total Deductions   : %.4f%n", totalDeductions);
-            System.out.printf("  Net Salary         : %.4f%n", netSalary2);
+            System.out.printf("    SSS              : ", sss);
+            System.out.printf("    PhilHealth       : ", philhealth);
+            System.out.printf("    Pag-IBIG         : ", pagibig);
+            System.out.printf("    Tax              : ", tax);
+            System.out.printf("  Total Deductions   : ", totalDeductions);
+            System.out.printf("  Net Salary         : ", netSalary2);
             System.out.println("==========================================================");
         }
     }
