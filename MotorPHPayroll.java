@@ -315,9 +315,9 @@ public class MotorPHPayroll {
 
             // 1st Cutoff block — no deductions shown
             System.out.printf("  Cutoff Date  : %s 1 to %s 15%n", monthName, monthName);
-            System.out.printf("  Total Hours Worked : %.4f hrs%n", hours1);
-            System.out.printf("  Gross Salary       : %.4f%n", gross1);
-            System.out.printf("  Net Salary         : %.4f%n", netSalary1);
+            System.out.printf("  Total Hours Worked : ", hours1);
+            System.out.printf("  Gross Salary       : ", gross1);
+            System.out.printf("  Net Salary         : ", netSalary1);
             System.out.println("----------------------------------------------------------");
 
             // 2nd Cutoff block — all deductions itemized here
